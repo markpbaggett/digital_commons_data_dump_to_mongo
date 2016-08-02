@@ -40,12 +40,13 @@ for x in os.walk(path):
     new_path = test[0]
     if new_path != path:
         full_path = ('{0}/metadata.xml'.format(new_path))
-        f = open(full_path)
-        s = f.read()
-        clean = remove_other_bad_stuff(s)
-        json_string = json.dumps(xmltodict.parse(clean))
-        json_document = json.loads(json_string)
-        try_adding = add_to_mongo(json_document)
-        total_records += 1
+        if os.path.isfile(full_path) == True:
+            f = open(full_path)
+            s = f.read()
+            clean = remove_other_bad_stuff(s)
+            json_string = json.dumps(xmltodict.parse(clean))
+            json_document = json.loads(json_string)
+            try_adding = add_to_mongo(json_document)
+            total_records += 1
 print('Done!')
 print('Created {0} total records.'.format(total_records))
